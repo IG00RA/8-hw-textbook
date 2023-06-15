@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchTasks, addTask, deleteTask, toggleCompleted } from './operations';
+import { fetchTasks, addTask, deleteTask } from './operations';
 
 const handlePending = state => {
   state.isLoading = true;
@@ -24,8 +24,6 @@ const tasksSlice = createSlice({
     [addTask.rejected]: handleRejected,
     [deleteTask.pending]: handlePending,
     [deleteTask.rejected]: handleRejected,
-    [toggleCompleted.pending]: handlePending,
-    [toggleCompleted.rejected]: handleRejected,
     [fetchTasks.fulfilled](state, action) {
       state.isLoading = false;
       state.error = null;
@@ -43,14 +41,6 @@ const tasksSlice = createSlice({
         task => task.id === action.payload.id
       );
       state.items.splice(index, 1);
-    },
-    [toggleCompleted.fulfilled](state, action) {
-      state.isLoading = false;
-      state.error = null;
-      const index = state.items.findIndex(
-        task => task.id === action.payload.id
-      );
-      state.items.splice(index, 1, action.payload);
     },
   },
 });
